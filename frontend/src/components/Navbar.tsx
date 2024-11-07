@@ -6,10 +6,6 @@ import { useUser } from "../UserContext";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
-  const userId = user?._id;
-  console.log(user);
-
-  console.log(userId);
 
   return (
     <nav className="fixed w-full z-50 backdrop-blur-md pt-4 px-4">
@@ -22,8 +18,10 @@ const Navbar = () => {
             <span className="ml-2 text-xl font-bold text-white">DocXtract</span>
           </Link>
 
-          {userId ? (
-            <>Welcome !{`${user.name}`}</>
+          {user ? (
+            <>
+              <div className="text-sm font-semibold">Welcome! {`${user.name}`}</div>
+            </>
           ) : (
             <>
               <motion.button
