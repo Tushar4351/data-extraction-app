@@ -5,13 +5,13 @@ import jwt from "jsonwebtoken";
 declare global {
   namespace Express {
     interface Request {
-      userId?: string;
+      id: string;
     }
   }
 }
 
 interface JwtPayload {
-  userId: string;
+  id: string;
 }
 
 export const verifyToken = (
@@ -40,8 +40,7 @@ export const verifyToken = (
         .json({ success: false, message: "Unauthorized - invalid token" });
       return;
     }
-
-    req.userId = decoded.userId;
+    req.id = decoded.id;
     next();
   } catch (error) {
     console.log("Error in verifyToken ", error);

@@ -84,7 +84,6 @@ export const signin = async (
   }
 };
 
-
 export const logout = async (
   req: Request,
   res: Response,
@@ -94,8 +93,12 @@ export const logout = async (
   res.status(200).json({ success: true, message: "Logged out successfully" });
 };
 
-export const checkAuth = async (res: any, req: any) => {
-  const user = await User.findById(req.userId).select("-password");
+export const checkAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = await User.findById(req.id).select("-password");
   if (!user) {
     return res.status(400).json({ success: false, message: "User not found" });
   }

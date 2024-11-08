@@ -6,6 +6,7 @@ import { useUser } from "../UserContext";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
+console.log(user);
 
   return (
     <nav className="fixed w-full z-50 backdrop-blur-md pt-4 px-4">

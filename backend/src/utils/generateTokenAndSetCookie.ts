@@ -7,8 +7,6 @@ export const generateTokenAndSetCookie = (
   user: NewUserRequestBody
 ): string => {
   const jwtSecret = process.env.JWT_SECRET;
-  console.log(jwtSecret);
-
   if (!jwtSecret) {
     throw new Error("JWT_SECRET is not defined in the environment variables");
   }

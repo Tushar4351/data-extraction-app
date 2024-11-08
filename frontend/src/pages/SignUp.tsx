@@ -5,6 +5,7 @@ import { UserPlus, Mail, Lock, User } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "../UserContext";
+import { server } from "../utils/data";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/user/new",
+        `${server}/api/v1/user/new`,
         {
           name,
           email,

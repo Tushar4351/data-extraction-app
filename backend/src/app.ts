@@ -2,7 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import cors from "cors";
 import { connectDB } from "./utils/mongoDBConnection.js";
-
+import cookieParser from "cookie-parser";
 //importing routes
 import userRoute from "./routes/user.route.js";
 
@@ -18,6 +18,7 @@ connectDB(mongoURI);
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -37,5 +38,5 @@ app.get("/:universalURL", (req, res) => {
 app.use("/api/v1/user", userRoute);
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-  });
+  console.log(`Server is running on http://localhost:${port}`);
+});
