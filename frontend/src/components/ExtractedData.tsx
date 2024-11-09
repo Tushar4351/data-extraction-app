@@ -2,9 +2,13 @@ import React from "react";
 import { FileText, User, CalendarDays, Hash, X, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useUser } from "../UserContext";
+import api from "../utils/data";
+import toast from "react-hot-toast";
 
 interface ExtractedDataProps {
   data: {
+    userId: string;
     fileName: string;
     name?: string;
     documentNumber?: string;
@@ -15,13 +19,37 @@ interface ExtractedDataProps {
 
 const ExtractedData = ({ data, onReset }: ExtractedDataProps) => {
   const navigate = useNavigate();
-  const isLoggedIn = false; // Replace with actual auth state
+  const { user } = useUser();
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleSave = () => {
-    if (!isLoggedIn) {
+  const handleSave = async () => {
+    if (!user) {
       navigate("/signup");
-    } else {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await api.post("/data/new", {
+        userId: user._id,
+        fileName: data.fileName,
+        name: data.name,
+        documentNumber: data.documentNumber,
+        expirationDate: data.expirationDate,
+      });
+      toast.success("Data save successfully!");
+      if (response.status !== 200) {
+        toast.error("Something went wrong");
+        throw new Error("Failed to save data");
+      }
+
+      // If successful, navigate to dashboard
       navigate("/dashboard");
+    } catch (error) {
+      console.error("Error saving data:", error);
+      // Here you might want to show an error toast/alert to the user
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -99,10 +127,11 @@ const ExtractedData = ({ data, onReset }: ExtractedDataProps) => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleSave}
-          className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+          disabled={isLoading}
+          className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save className="w-5 h-5" />
-          Save to Dashboard
+          {isLoading ? "Saving..." : "Save to Dashboard"}
         </motion.button>
       </div>
     </motion.div>

@@ -4,6 +4,7 @@ import ProcessingLoader from "./ProcessingLoader";
 import ExtractedData from "./ExtractedData";
 import { createWorker } from "tesseract.js";
 
+
 interface ExtractedDataType {
   fileName: string;
   name?: string;
@@ -36,16 +37,14 @@ const FileUpload = () => {
     try {
       const worker = await createWorker("eng");
       const ret = await worker.recognize(imgUrl);
-    //  console.log(ret.data.text);
+      //  console.log(ret.data.text);
 
-    
       const extractedText = ret.data.text.trim();
       const name = extractedText.match(/NAME\s+(\w+\s\w+)/)?.[1];
       const documentNumber = extractedText.match(/D:\s*(\d+)/)?.[1];
       const expirationDate = extractedText.match(
         /EXP:\s*(\d{2}\/\d{2}\/\d{4})/
       )?.[1];
-     
 
       setExtractedData({
         fileName: file.name,
@@ -53,6 +52,7 @@ const FileUpload = () => {
         documentNumber,
         expirationDate,
       });
+  
     } catch (error) {
       console.error("Error processing file:", error);
     } finally {

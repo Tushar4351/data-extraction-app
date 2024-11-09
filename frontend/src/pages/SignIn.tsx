@@ -5,7 +5,7 @@ import { LogIn, Mail, Lock } from "lucide-react";
 import { useUser } from "../UserContext";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { server } from "../utils/data";
+import api from "../utils/data";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -16,14 +16,11 @@ const SignIn = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${server}/api/v1/user/signin`,
-        { email, password }
-      );
+      const response = await api.post("/user/signin", { email, password });
 
       if (response.status === 200) {
         const user = response.data.user;
-        const token = response.data.token; 
+        const token = response.data.token;
         setUser(user);
         localStorage.setItem("authToken", token); // Save token in localStorage for persistence
 

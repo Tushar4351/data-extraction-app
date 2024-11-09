@@ -1,23 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FileText, Clock, Download } from "lucide-react";
+import { FileText, Clock, Trash } from "lucide-react";
+import { useUser } from "../UserContext";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import api from "../utils/data";
+
+interface ExtractedDataType {
+  _id: string;
+  fileName: string;
+  name: string;
+  documentNumber: string;
+  expirationDate: string;
+}
 
 const Dashboard = () => {
-  // Mock data for extracted documents
-  const documents = [
-    {
-      id: 1,
-      name: "Invoice-2024-001.pdf",
-      date: "2024-03-10",
-      type: "Invoice",
-      extractedData: {
-        name: "John Doe",
-        amount: "$1,500",
-        date: "2024-03-10",
-      },
-    },
-    // Add more mock documents as needed
-  ];
+  const { user } = useUser();
+  const [documents, setDocuments] = useState<ExtractedDataType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch documents when component mounts
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  const fetchDocuments = async () => {
+    try {
+      const response = await api.get(`/data/${user?._id}`);
+      setDocuments(response.data.data);
+    } catch (error) {
+      toast.error("Failed to fetch documents");
+      console.error("Error fetching documents:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const DeleteHandler = async (id: string) => {
+    try {
+      await api.delete(`/data/${id}`);
+      setDocuments((prevDocs) => prevDocs.filter((doc) => doc._id !== id));
+      toast.success("Document deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete document");
+      console.error("Error deleting document:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="pt-28 px-4 sm:px-6 lg:px-8 text-center text-white">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="pt-28 px-4 sm:px-6 lg:px-8">
@@ -34,53 +70,61 @@ const Dashboard = () => {
             <p className="text-gray-400">Manage your extracted document data</p>
           </div>
 
-          <div className="grid gap-6">
-            {documents.map((doc) => (
-              <motion.div
-                key={doc.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                whileHover={{ scale: 1.01 }}
-                className="bg-gray-700/30 rounded-lg p-4 border border-gray-600"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-8 h-8 text-blue-500" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">
-                        {doc.name}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm text-gray-400">
-                        <Clock className="w-4 h-4" />
-                        <span>{doc.date}</span>
+          {documents.length === 0 ? (
+            <div className="text-center text-gray-400 py-8">
+              No documents found
+            </div>
+          ) : (
+            <div className="grid gap-6">
+              {documents.map((doc) => (
+                <motion.div
+                  key={doc._id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  whileHover={{ scale: 1.01 }}
+                  className="bg-gray-700/30 rounded-lg p-4 border border-gray-600"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <FileText className="w-8 h-8 text-blue-500" />
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">
+                          {doc.fileName}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                          <Clock className="w-4 h-4" />
+                          <span>
+                            {new Date(doc.expirationDate).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
                     </div>
+                    <motion.button
+                      onClick={() => DeleteHandler(doc._id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="p-2 hover:bg-gray-600 rounded-lg transition-colors"
+                    >
+                      <Trash className="w-5 h-5 text-gray-400" />
+                    </motion.button>
                   </div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-2 hover:bg-gray-600 rounded-lg transition-colors"
-                  >
-                    <Download className="w-5 h-5 text-gray-400" />
-                  </motion.button>
-                </div>
 
-                <div className="mt-4 pl-11">
-                  <div className="text-sm text-gray-400">
-                    <p>Type: {doc.type}</p>
-                    <p>Extracted Data:</p>
-                    <ul className="mt-2 space-y-1 text-gray-300">
-                      {Object.entries(doc.extractedData).map(([key, value]) => (
-                        <li key={key}>
-                          {key}: {value}
+                  <div className="mt-4 pl-11">
+                    <div className="text-sm text-gray-400">
+                      <ul className="mt-2 space-y-1 text-gray-300">
+                        <li>Name: {doc.name}</li>
+                        <li>Document Number: {doc.documentNumber}</li>
+                        <li>
+                          Expiration Date:{" "}
+                          {new Date(doc.expirationDate).toLocaleDateString()}
                         </li>
-                      ))}
-                    </ul>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>

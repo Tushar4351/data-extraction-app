@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import FileUpload from '../components/FileUpload';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import FileUpload from "../components/FileUpload";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,8 +36,8 @@ function Home() {
               transition={{ delay: 0.3 }}
               className="text-xl text-gray-400 max-w-2xl mx-auto"
             >
-              Upload any document and let our AI extract the important information for you.
-              Fast, accurate, and secure.
+              Upload any document and let our AI extract the important
+              information for you. Fast, accurate, and secure.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -44,13 +45,16 @@ function Home() {
               transition={{ delay: 0.4 }}
               className="flex justify-center gap-4"
             >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-all duration-300"
-              >
-                Try Now
-              </motion.button>
+              <Link to="/dashboard">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-all duration-300"
+                >
+                  Try Now
+                </motion.button>
+              </Link>
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

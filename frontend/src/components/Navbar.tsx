@@ -1,12 +1,34 @@
 import { useNavigate, Link } from "react-router-dom";
-import { FileText, LogIn } from "lucide-react";
+import { FileText, LogIn, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { useUser } from "../UserContext";
+import api from "../utils/data";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
-console.log(user);
+  const { user, setUser } = useUser();
+
+  const LogoutHandler = async () => {
+    try {
+      const response = await api.get("/user/logout");
+
+      if (response.status === 200) {
+        toast.success("Sign Out Successfully");
+        setUser(null);
+        window.location.reload();
+        navigate("/");
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (error) {
+      // Log the error for debugging purposes
+      console.error("Logout error:", error);
+
+      // Display a user-friendly error message
+      toast.error("Sign Out Failed. Please try again later.");
+    }
+  };
 
   return (
     <nav className="fixed w-full z-50 backdrop-blur-md pt-4 px-4">
@@ -21,7 +43,11 @@ console.log(user);
 
           {user ? (
             <>
-              <div className="text-sm font-semibold">Welcome! {`${user.name}`}</div>
+              <button onClick={LogoutHandler}>
+                <div className="text-sm font-semibold flex gap-2 items-center">
+                  <LogOut className="w-4 h-4" /> Welcome! {`${user.name}`}
+                </div>
+              </button>
             </>
           ) : (
             <>

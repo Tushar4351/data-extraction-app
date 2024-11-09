@@ -5,7 +5,7 @@ import { UserPlus, Mail, Lock, User } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "../UserContext";
-import { server } from "../utils/data";
+import api from "../utils/data";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -17,14 +17,11 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${server}/api/v1/user/new`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const response = await api.post("/user/new", {
+        name,
+        email,
+        password,
+      });
 
       if (response.status === 201) {
         const user = response.data.user; // Assuming the user data is returned in the response
