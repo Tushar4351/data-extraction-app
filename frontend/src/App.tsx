@@ -28,7 +28,7 @@ function App() {
           setUser(response.data.user);
         }
       } catch (err) {
-        console.log(err);
+        console.error("Auth check failed:", err);
       }
     };
     checkAuth();

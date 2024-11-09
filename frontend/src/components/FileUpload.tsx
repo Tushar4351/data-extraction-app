@@ -4,7 +4,6 @@ import ProcessingLoader from "./ProcessingLoader";
 import ExtractedData from "./ExtractedData";
 import { createWorker } from "tesseract.js";
 
-
 interface ExtractedDataType {
   fileName: string;
   name?: string;
@@ -52,7 +51,6 @@ const FileUpload = () => {
         documentNumber,
         expirationDate,
       });
-  
     } catch (error) {
       console.error("Error processing file:", error);
     } finally {
@@ -107,7 +105,7 @@ const FileUpload = () => {
           type="file"
           onChange={handleFileInput}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          accept=".pdf,.png,.jpg,.jpeg"
+          accept=".png,.jpg,.jpeg"
         />
         <div className="flex flex-col items-center justify-center gap-4">
           <Upload
@@ -119,7 +117,7 @@ const FileUpload = () => {
             Drag & drop files here or click to browse
           </p>
           <p className="text-sm text-gray-400">
-            Support for PDF documents and images
+            Support for documents images
           </p>
         </div>
       </div>

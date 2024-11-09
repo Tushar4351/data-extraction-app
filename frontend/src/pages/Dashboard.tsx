@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FileText, Clock, Trash } from "lucide-react";
 import { useUser } from "../UserContext";
-import axios from "axios";
+
 import { toast } from "react-hot-toast";
 import api from "../utils/data";
 
@@ -17,22 +17,26 @@ interface ExtractedDataType {
 const Dashboard = () => {
   const { user } = useUser();
   const [documents, setDocuments] = useState<ExtractedDataType[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Fetch documents when component mounts
   useEffect(() => {
-    fetchDocuments();
-  }, []);
+    if (user?._id) {
+      fetchDocuments();
+    }
+  }, [user?._id]);
 
   const fetchDocuments = async () => {
     try {
       const response = await api.get(`/data/${user?._id}`);
-      setDocuments(response.data.data);
-    } catch (error) {
-      toast.error("Failed to fetch documents");
-      console.error("Error fetching documents:", error);
-    } finally {
-      setLoading(false);
+
+      setDocuments(response.data.data || []);
+    } catch (error: unknown) {
+
+      if (error.response?.status !== 404) {
+        toast.error("Something went wrong while fetching your documents");
+        console.error("Error fetching documents:", error);
+      }
+      setDocuments([]);
     }
   };
 
@@ -46,14 +50,6 @@ const Dashboard = () => {
       console.error("Error deleting document:", error);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="pt-28 px-4 sm:px-6 lg:px-8 text-center text-white">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div className="pt-28 px-4 sm:px-6 lg:px-8">

@@ -30,15 +30,18 @@ function Home() {
             >
               Extract Data Instantly
             </motion.h1>
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               className="text-xl text-gray-400 max-w-2xl mx-auto"
             >
-              Upload any document and let our AI extract the important
-              information for you. Fast, accurate, and secure.
+              Download the sample driving license document and drag it into our drop zone.
+              In this beta version, let our website extract key information for you,
+              which you can securely store by registering. Fast, accurate, and secure.
             </motion.p>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -55,14 +58,16 @@ function Home() {
                 </motion.button>
               </Link>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 border border-gray-600 hover:border-blue-500 rounded-lg font-medium transition-all duration-300 group"
-              >
-                Learn More
-                <ArrowRight className="inline ml-2 transform group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+              <a href="./8351119.jpg" download="image.jpg">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-3 border border-gray-600 hover:border-blue-500 rounded-lg font-medium transition-all duration-300 group"
+                >
+                  Sample License
+                  <ArrowRight className="inline ml-2 transform group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </a>
             </motion.div>
           </div>
 

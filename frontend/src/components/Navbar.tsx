@@ -11,12 +11,11 @@ const Navbar = () => {
 
   const LogoutHandler = async () => {
     try {
-      const response = await api.get("/user/logout");
+      const response = await api.post("/user/logout");
 
       if (response.status === 200) {
         toast.success("Sign Out Successfully");
         setUser(null);
-        window.location.reload();
         navigate("/");
       } else {
         throw new Error("Unexpected response from server");
