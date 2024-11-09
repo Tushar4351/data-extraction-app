@@ -20,12 +20,11 @@ const SignIn = () => {
 
       if (response.status === 200) {
         const user = response.data.user;
-        const token = response.data.token;
+
         setUser(user);
-        localStorage.setItem("authToken", token); // Save token in localStorage for persistence
 
         toast.success("Logged in successfully!");
-        navigate("/dashboard"); // Redirect to the dashboard on successful login
+        navigate("/dashboard");
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {

@@ -43,7 +43,7 @@ const ExtractedData = ({ data, onReset }: ExtractedDataProps) => {
         throw new Error("Failed to save data");
       }
 
-      // If successful, navigate to dashboard
+      
       navigate("/dashboard");
     } catch (error) {
       console.error("Error saving data:", error);

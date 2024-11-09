@@ -36,7 +36,7 @@ const FileUpload = () => {
     try {
       const worker = await createWorker("eng");
       const ret = await worker.recognize(imgUrl);
-      //  console.log(ret.data.text);
+     
 
       const extractedText = ret.data.text.trim();
       const name = extractedText.match(/NAME\s+(\w+\s\w+)/)?.[1];

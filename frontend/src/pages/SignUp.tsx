@@ -24,10 +24,10 @@ const SignUp = () => {
       });
 
       if (response.status === 201) {
-        const user = response.data.user; // Assuming the user data is returned in the response
+        const user = response.data.user; 
         setUser(user);
         toast.success("Account created successfully!");
-        navigate("/dashboard"); // Redirect on successful signup
+        navigate("/dashboard"); 
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {

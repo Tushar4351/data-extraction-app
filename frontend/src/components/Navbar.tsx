@@ -21,10 +21,10 @@ const Navbar = () => {
         throw new Error("Unexpected response from server");
       }
     } catch (error) {
-      // Log the error for debugging purposes
+     
       console.error("Logout error:", error);
 
-      // Display a user-friendly error message
+     
       toast.error("Sign Out Failed. Please try again later.");
     }
   };
