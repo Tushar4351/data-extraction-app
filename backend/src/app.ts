@@ -13,7 +13,7 @@ config({
 
 const port = process.env.PORT || 4000;
 const mongoURI = process.env.MONGO_URI || "";
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://docxtract.vercel.app";
 
 connectDB(mongoURI);
 
