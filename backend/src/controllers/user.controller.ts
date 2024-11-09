@@ -97,7 +97,7 @@ export const checkAuth = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<any> => {
   const user = await User.findById(req.id).select("-password");
   if (!user) {
     return res.status(400).json({ success: false, message: "User not found" });
