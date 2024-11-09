@@ -64,8 +64,6 @@ export const deleteData = async (
   try {
     const { id } = req.params;
     const userId = req.id;
-    console.log("document id", id);
-    console.log("user id", userId);
 
     const deletedData = await ExtractedData.findOneAndDelete({
       _id: id,
