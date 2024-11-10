@@ -20,9 +20,7 @@ const SignIn = () => {
 
       if (response.status === 200) {
         const user = response.data.user;
-
         setUser(user);
-
         toast.success("Logged in successfully!");
         navigate("/dashboard");
       }
